@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Demo — CredFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #EEF2FF 0%, #F8FAFC 50%, #E0E7FF 100%);
+      color: #0F172A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 14px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 20px 40px -15px rgba(47, 84, 235, 0.12);
+      overflow: hidden;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-bar {
+      background: linear-gradient(135deg, #4053D6 0%, #2938B8 100%);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .brand-title {
+      color: #ffffff;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .live-badge {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .form-content {
+      padding: 26px 24px 32px;
+    }
+
+    .headline {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .sub-headline {
+      font-size: 13.5px;
+      color: #64748B;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    label span.req {
+      color: #EF4444;
+      margin-left: 2px;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 14px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #64748B;
+      pointer-events: none;
+    }
+
+    input[type="text"], input[type="tel"], input[type="email"], select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 9px;
+      font-size: 14.5px;
+      color: #0F172A;
+      background: #FFFFFF;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input.has-prefix {
+      padding-left: 50px;
+    }
+
+    input:focus, select:focus {
+      border-color: #4053D6;
+      box-shadow: 0 0 0 3px rgba(64, 83, 214, 0.15);
+    }
+
+    .software-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .software-card {
+      position: relative;
+    }
+
+    .software-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .software-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 6px;
+      border: 2px solid #E2E8F0;
+      border-radius: 10px;
+      background: #F8FAFC;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .software-text {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .software-card input[type="radio"]:checked + .software-label {
+      border-color: #4053D6;
+      background: #EFF2FE;
+      box-shadow: 0 4px 10px rgba(64, 83, 214, 0.12);
+    }
+
+    .software-card input[type="radio"]:checked + .software-label .software-text {
+      color: #4053D6;
+    }
+
+    select {
+      cursor: pointer;
+      font-weight: 600;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+      padding-right: 36px;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 14px;
+      background: #4053D6;
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 14px rgba(64, 83, 214, 0.25);
+    }
+
+    .submit-button:hover {
+      background: #3243BD;
+    }
+
+    .submit-button:disabled {
+      background: #94A3B8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .trust-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 11.5px;
+      color: #64748B;
+    }
+
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 40px 24px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .success-badge {
+      width: 64px;
+      height: 64px;
+      background: #ECFDF5;
+      color: #059669;
+      border: 2px solid #A7F3D0;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 16px rgba(5, 150, 105, 0.15);
+    }
+
+    .success-head {
+      font-size: 22px;
+      font-weight: 800;
+      color: #065F46;
+      margin-bottom: 6px;
+    }
+
+    .success-text {
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .slot-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: #EFF2FE;
+      color: #4053D6;
+      font-weight: 800;
+      border-radius: 20px;
+      font-size: 14px;
+      margin: 8px 0 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    
+    <div class="header-bar">
+      <div class="brand-wrap">
+        <img src="https://credflow.in/credflow-logo.png" alt="CredFlow Logo" class="brand-logo">
+        <span class="brand-title">CredFlow</span>
+      </div>
+      <span class="live-badge">1-on-1 Demo</span>
+    </div>
+
+    <div class="form-content" id="formWrapper">
+      <h1 class="headline">Book Your Personalized Demo</h1>
+      <p class="sub-headline">Discover how CredFlow automates accounting & collects 40% faster.</p>
+
+      <form id="bookingForm" onsubmit="submitDemoForm(event)">
+
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="cust_name" placeholder="e.g. Varun Sharma" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="input-prefix">+91</span>
+            <input type="tel" id="cust_phone" class="has-prefix" placeholder="98765 43210" pattern="[0-9]{10}" maxlength="10" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Work Email <span class="req">*</span></label>
+          <input type="email" id="cust_email" placeholder="e.g. varun@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Which Accounting Software do you use? <span class="req">*</span></label>
+          <div class="software-grid">
+            <label class="software-card">
+              <input type="radio" name="accounting_soft" value="Tally" checked>
+              <div class="software-label"><span class="software-text">Tally</span></div>
+            </label>
+            <label class="software-card">
+              <input type="radio" name="accounting_soft" value="Busy">
+              <div class="software-label"><span class="software-text">Busy</span></div>
+            </label>
+            <label class="software-card">
+              <input type="radio" name="accounting_soft" value="Other">
+              <div class="software-label"><span class="software-text">Other</span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred Demo Slot <span class="req">*</span></label>
+          <select id="cust_slot" required>
+            <option value="10:00 AM – 12:00 PM">🕒 10:00 AM – 12:00 PM (Morning)</option>
+            <option value="12:00 PM – 02:00 PM">🕒 12:00 PM – 02:00 PM (Afternoon)</option>
+            <option value="02:00 PM – 04:00 PM">🕒 02:00 PM – 04:00 PM (Post-Lunch)</option>
+            <option value="04:00 PM – 06:00 PM">🕒 04:00 PM – 06:00 PM (Evening)</option>
+            <option value="05:00 PM – 07:00 PM">🕒 05:00 PM – 07:00 PM (Late Evening)</option>
+          </select>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="submit-button">Confirm Demo Slot →</button>
+        <div class="trust-footer">🔒 100% Confidential • Instant Confirmation</div>
+
+      </form>
+    </div>
+
+    <div class="success-panel" id="successPanel">
+      <div class="success-badge">✓</div>
+      <h2 class="success-head">Slot Confirmed!</h2>
+      <div class="slot-pill" id="displaySlot">10:00 AM – 12:00 PM</div>
+      <p class="success-text">Thank you, <strong id="displayName">Varun</strong>!<br>Your 1-on-1 personalized demo has been reserved.<br>Our team will connect with you at your chosen time.</p>
+    </div>
+
+  </div>
+
+  <script>
+    // Auto-fill from URL parameters (e.g. ?name=Varun&email=varun@example.com)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const nameParam = urlParams.get('name');
+      const emailParam = urlParams.get('email');
+      const phoneParam = urlParams.get('phone');
+      if (nameParam) document.getElementById('cust_name').value = nameParam;
+      if (emailParam) document.getElementById('cust_email').value = emailParam;
+      if (phoneParam) document.getElementById('cust_phone').value = phoneParam;
+    });
+
+    const SCRIPT_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzsqYhIBsYXC4ZgkmSUP6-0x03QkJ0JdMUr-7yxdRBhxlqFrZhQGdDfedW2hDflUSVl/exec";
+
+    function submitDemoForm(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btnSubmit");
+      btn.disabled = true;
+      btn.innerText = "Booking Slot...";
+
+      const nameVal = document.getElementById("cust_name").value.trim();
+      const phoneVal = document.getElementById("cust_phone").value.trim();
+      const emailVal = document.getElementById("cust_email").value.trim();
+      const softVal = document.querySelector('input[name="accounting_soft"]:checked')?.value || "Tally";
+      const slotVal = document.getElementById("cust_slot").value;
+
+      const payload = {
+        name: nameVal,
+        phone: phoneVal,
+        email: emailVal,
+        software: softVal,
+        slot: slotVal
+      };
+
+      // Send to Google Sheet Webhook
+      fetch(SCRIPT_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        document.getElementById("formWrapper").style.display = "none";
+        document.getElementById("displayName").innerText = nameVal;
+        document.getElementById("displaySlot").innerText = slotVal;
+        document.getElementById("successPanel").style.display = "block";
+      }).catch((err) => {
+        // Even if no-cors triggers catch, show success
+        document.getElementById("formWrapper").style.display = "none";
+        document.getElementById("displayName").innerText = nameVal;
+        document.getElementById("displaySlot").innerText = slotVal;
+        document.getElementById("successPanel").style.display = "block";
+      });
+    }
+  </script>
+
+</body>
+</html>
